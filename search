@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Search Table</title>
+</head>
+<body>
+  <input type="text" id="query" placeholder="Enter search phrase">
+  <button onclick="search()">Search</button>
+  <table id="results" border="1"></table>
+
+  <script>
+    async function search() {
+      const query = document.getElementById("query").value;
+      const res = await fetch(`/search?q=${encodeURIComponent(query)}`);
+      const results = await res.json();
+      const table = document.getElementById("results");
+      table.innerHTML = "<tr><th>Title</th><th>Link</th><th>Snippet</th></tr>";
+      results.forEach(r => {
+        table.innerHTML += `
+          <tr>
+            <td>${r.title}</td>
+            <td><a href="${r.link}" target="_blank">${r.link}</a></td>
+            <td>${r.snippet}</td>
+          </tr>`;
+      });
+    }
+  </script>
+</body>
+</html>
